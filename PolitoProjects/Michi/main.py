@@ -1,4 +1,3 @@
-#
 def main():
     with open("dna.txt", "r", encoding="utf-8") as dna, open("codicegenetico.txt", "r", encoding="utf-8") as codiceGenetico:
         listaDna=[]
