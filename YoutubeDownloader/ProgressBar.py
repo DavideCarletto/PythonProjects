@@ -12,5 +12,7 @@ class ProgressBar(ProgressLogger):
           # TODO: if merging video and audio, make the progress from the 3 splitted parts using kw parameter. Otherwise,
           #  proceed with normal count of percentage. Then return the value (for the progressBar from tkinter)
 
-
+          if(kw["merge"] == True):
+            print("merging video and audio file:", end=" ")
+              
           print(f"{kw['total']}/100")
