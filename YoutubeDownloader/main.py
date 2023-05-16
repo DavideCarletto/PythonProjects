@@ -12,8 +12,6 @@ API_KEY = os.environ.get("YT-API")
 pytube.request.default_range_size = 1000000
 
 
-
-
 def get_pl_ids():
     service = build("youtube", "v3", developerKey=API_KEY)
     nextPageToken = None

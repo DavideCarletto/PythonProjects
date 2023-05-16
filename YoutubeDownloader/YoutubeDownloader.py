@@ -7,7 +7,7 @@ from ProgressBar import ProgressBar
 
 kw = {
     "total":0,
-    "merge":False,
+    "merge":True,
     "elapsed-time":0,
     "time-remaning":0
 }
@@ -31,7 +31,7 @@ def merge_audio_video(videofile, audiofile,res, link,ti):
 
 def download():
 
-    link = 'https://www.youtube.com/watch?v=x849PAwxkew&ab_channel=Antogamer90'
+    link = 'https://www.youtube.com/shorts/bBblxp5Z--8'
     ti = time.time()
     yt = pytube.YouTube(link, use_oauth=True, allow_oauth_cache=True)
     print('Title:', yt.title)

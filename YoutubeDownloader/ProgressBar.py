@@ -14,5 +14,5 @@ class ProgressBar(ProgressLogger):
 
           if(kw["merge"] == True):
             print("merging video and audio file:", end=" ")
-              
+
           print(f"{kw['total']}/100")
