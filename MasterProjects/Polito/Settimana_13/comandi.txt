@@ -1,3 +1,0 @@
-c testo.txt
-d codice.txt
-d codice2.txt
