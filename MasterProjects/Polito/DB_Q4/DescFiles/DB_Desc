@@ -1,0 +1,7 @@
+La base di dati si chiama PALESTRA e riguarda le attivita' di una palestra. Essa e' caratterizzata dal seguente schema logico:
+
+ISTRUTTORE (CodFisc (PK), Nome, Cognome, DataNascita, Email, Telefono*)
+
+CORSI (CodC (PK), Nome, Tipo, Livello)
+
+PROGRAMMA (CodFisc (PK), Giorno (PK), OraInizio (PK), Durata, CodC, Sala
