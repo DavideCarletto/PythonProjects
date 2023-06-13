@@ -2,10 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c812a673-5bd4-4053-b9f4-7a5889fc9fb2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../MasterProjects/Polito/Streamlit/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../MasterProjects/Polito/Streamlit/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MasterProjects/Polito/Streamlit/pages/1__Analisi.py" beforePathEscaped="$PROJECT_DIR$/../MasterProjects/Polito/Streamlit/pages/1_📈_Analisi.py" beforeDir="false" afterPath="$PROJECT_DIR$/../MasterProjects/Polito/Streamlit/pages/1__Analisi.py" afterPathEscaped="$PROJECT_DIR$/../MasterProjects/Polito/Streamlit/pages/1_📈_Analisi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MasterProjects/Polito/Streamlit/pages/2__Aggiungi.py" beforePathEscaped="$PROJECT_DIR$/../MasterProjects/Polito/Streamlit/pages/2_🖊_Aggiungi.py" beforeDir="false" afterPath="$PROJECT_DIR$/../MasterProjects/Polito/Streamlit/pages/2__Aggiungi.py" afterPathEscaped="$PROJECT_DIR$/../MasterProjects/Polito/Streamlit/pages/2_🖊_Aggiungi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MasterProjects/Polito/Streamlit/utils/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/../MasterProjects/Polito/Streamlit/utils/utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../FileEditor/.idea/FileEditor.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../MasterProjects/Polito/Settimana_6/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../MasterProjects/Polito/Streamlit/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MasterProjects/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../MasterProjects/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MasterProjects/Polito/Settimana_6/.idea/Settimana_6.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../MasterProjects/Polito/Settimana_6/.idea/Settimana_6.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MasterProjects/Polito/Settimana_6/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../MasterProjects/Polito/Settimana_6/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MasterProjects/Polito/Settimana_6/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../MasterProjects/Polito/Settimana_6/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProgressBar.py" beforeDir="false" afterPath="$PROJECT_DIR$/ProgressBar.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/YoutubeDownloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/YoutubeDownloader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,7 +31,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../MasterProjects/Polito/L05_DB" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../MasterProjects/Polito/Streamlit" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunManager">
@@ -71,7 +77,6 @@
       <workItem from="1684157244536" duration="136000" />
       <workItem from="1684158286777" duration="110000" />
       <workItem from="1684161397424" duration="24000" />
-      <workItem from="1686306222691" duration="19000" />
     </task>
     <servers />
   </component>
