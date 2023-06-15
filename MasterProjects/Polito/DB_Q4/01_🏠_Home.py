@@ -34,6 +34,7 @@ if __name__ == "__main__":
 
             content = color_content(content,words_colors)
             st.markdown(content, unsafe_allow_html=True)
+        st.markdown("##### Di seguito la rappresentazione dello :violet[schema E-R]:")
         image_path = "./images/schema.png"
         url_link = "https://designer.polito.it"
 

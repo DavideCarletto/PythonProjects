@@ -23,11 +23,26 @@ def visualize_metric_courses():
         st.metric("Numero di corsi distinti",type_courses)
     pass
 
-
+def visualize_tab_prenotazioni(query):
+    date = execute_query(st.session_state["connection"], query)
+    tab_prenotazioni = pd.DataFrame(date)
+    st.dataframe(tab_prenotazioni, use_container_width=True)
 
 if __name__ == "__main__":
     st.title("🏋 :orange[Corsi]")
 
     if check_connection():
-       visualize_metric_courses()
+        visualize_metric_courses()
+
+        filter = st.text_input(label="Filtra per tipo di corso")
+        min_lvl= 0
+        max_lvl = 10
+        lvl_range = st.slider("Seleziona l'intervallo di livelli che desideri visualizzare", min_lvl, max_lvl, (min_lvl, max_lvl))
+        query = "SELECT Giorno, OraInizio, Durata, Sala, programma.CodC, corsi.Nome, corsi.Tipo, corsi.Livello FROM programma, corsi  WHERE corsi.CodC = programma.CodC "
+        if filter != "":
+            query = query + f" and corsi.Tipo = '{filter}' "
+
+        query = query + f"and CORSI.Livello <= {lvl_range[1]} and CORSI.Livello>={lvl_range[0]}"
+
+        visualize_tab_prenotazioni(query= query)
 
