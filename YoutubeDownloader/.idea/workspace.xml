@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c812a673-5bd4-4053-b9f4-7a5889fc9fb2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../FileEditor/.idea/FileEditor.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MasterProjects/Polito/Settimana_6/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MasterProjects/Polito/Streamlit/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MasterProjects/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../MasterProjects/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MasterProjects/Polito/Settimana_6/.idea/Settimana_6.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../MasterProjects/Polito/Settimana_6/.idea/Settimana_6.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MasterProjects/Polito/Settimana_6/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../MasterProjects/Polito/Settimana_6/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MasterProjects/Polito/Settimana_6/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../MasterProjects/Polito/Settimana_6/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MasterProjects/Polito/DB_Q4/pages/3_️_Lezioni.py" beforePathEscaped="$PROJECT_DIR$/../MasterProjects/Polito/DB_Q4/pages/3_📊️_Lezioni.py" beforeDir="false" afterPath="$PROJECT_DIR$/../MasterProjects/Polito/DB_Q4/pages/3_️_Lezioni.py" afterPathEscaped="$PROJECT_DIR$/../MasterProjects/Polito/DB_Q4/pages/3_📊️_Lezioni.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProgressBar.py" beforeDir="false" afterPath="$PROJECT_DIR$/ProgressBar.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/YoutubeDownloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/YoutubeDownloader.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
@@ -18,8 +13,18 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/ProgressBar.py" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProjectId" id="2Mzxpxn1OmlGLAEnXBlFT7Bq6Hf" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -31,7 +36,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../MasterProjects/Polito/Streamlit" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunManager">
@@ -77,6 +82,8 @@
       <workItem from="1684157244536" duration="136000" />
       <workItem from="1684158286777" duration="110000" />
       <workItem from="1684161397424" duration="24000" />
+      <workItem from="1689848091412" duration="712000" />
+      <workItem from="1689931741422" duration="13149000" />
     </task>
     <servers />
   </component>
@@ -85,6 +92,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/YoutubeDownloader$Unnamed.coverage" NAME="YoutubeDownloader Coverage Results" MODIFIED="1680373571036" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.." />
-    <SUITE FILE_PATH="coverage/YoutubeDownloader$YoutubeDownloader.coverage" NAME="YoutubeDownloader Coverage Results" MODIFIED="1680373901828" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/YoutubeDownloader$YoutubeDownloader.coverage" NAME="YoutubeDownloader Coverage Results" MODIFIED="1689952223995" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

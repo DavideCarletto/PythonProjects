@@ -17,7 +17,7 @@ def visualize_graph():
     query = "SELECT COUNT(*) AS 'Num_Lezioni', Giorno FROM programma GROUP BY Giorno"
     lessons_per_day = execute_query(st.session_state["connection"],query)
     lessons_per_day_list = [dict(zip(lessons_per_day.keys(), result)) for result in lessons_per_day]
-    print(lessons_per_day_list)
+    # print(lessons_per_day_list)
     lessons_per_day_list[0]["order"] = 3
     lessons_per_day_list[1]["order"] = 0
     lessons_per_day_list[2]["order"] = 1
@@ -30,7 +30,7 @@ def visualize_graph():
         lessons_list.append((row["Giorno"], row["Num_Lezioni"]))
     df_daily_lessons = pd.DataFrame(lessons_list, columns=["Giorno", "Num_Lezioni"])
     df_daily_lessons["Giorno"] = df_daily_lessons["Giorno"].astype(str)
-    print(df_daily_lessons)
+    # print(df_daily_lessons)
     st.altair_chart(alt.Chart(df_daily_lessons).mark_line().encode(x=alt.X("Giorno", sort=None), y=alt.Y("Num_Lezioni")),use_container_width=True)
 
 if __name__ == "__main__":
