@@ -1,9 +1,12 @@
 import pytube  # to download video from YouTube
 import time  # to measure download time
 from ffmpeg_progress_yield import FfmpegProgress
-import threading
 import os
-
+import tkinter as tk
+from googleapiclient.discovery import build
+from PIL import Image, ImageTk
+import requests
+import threading
 
 kw = {
     "total":0,
@@ -36,8 +39,41 @@ def download(pb):
     else:
         print("No file removed")
 
-    link = 'https://www.youtube.com/shorts/bBblxp5Z--8'
-    ti = time.time()
+    # link = 'https://www.youtube.com/shorts/bBblxp5Z--8'
+    # ti = time.time()
+    # yt = pytube.YouTube(link, use_oauth=True, allow_oauth_cache=True)
+    # print('Title:', yt.title)
+    # print('Author:', yt.author)
+    # print('Published date:', yt.publish_date.strftime("%Y-%m-%d"))
+    # print('Number of views:', yt.views)
+    # print('Length of video:', yt.length, 'sec')
+    #
+    # for stream in yt.streams:
+    #     # Puoi filtrare solo i formati video, ignorando gli audio
+    #     if "video" in stream.mime_type:
+    #         resolution = stream.resolution if stream.resolution else "Audio-only"
+    #         print(f"Risoluzione: {resolution}, Formato: {stream.mime_type}")
+    #     if "audio" in stream.mime_type:
+    #         audio_format = stream.mime_type.replace("audio/", "")
+    #         print(f"Formato audio: {audio_format}, Bitrate: {stream.abr} kbps")
+    #
+    # try:
+    #     videofilter = yt.streams.filter(res="1080p", progressive=False).first()
+    #     audiofilter = yt.streams.filter(abr='128kbps',progressive=False, only_audio=True).first()
+    #     res = '1080p'
+    # except:
+    #     videofilter = yt.streams.filter(res='720p', progressive=False).first()
+    #     audiofilter = yt.streams.filter(abr='128kbps', progressive=False, only_audio=True).first()
+    #     res = '720p'
+    #
+    # videofile = videofilter.download(filename="video.mp4", pb = pb)
+    # audiofile = audiofilter.download(filename="audio.mp4", pb = pb)
+    #
+    # threading.Thread(target= merge_audio_video(videofile,audiofile, res, link, ti, pb)).start()
+    #
+    # return
+
+def show_all_results(link, service):
     yt = pytube.YouTube(link, use_oauth=True, allow_oauth_cache=True)
     print('Title:', yt.title)
     print('Author:', yt.author)
@@ -45,18 +81,33 @@ def download(pb):
     print('Number of views:', yt.views)
     print('Length of video:', yt.length, 'sec')
 
-    try:
-        videofilter = yt.streams.filter(res="1080p", progressive=False).first()
-        audiofilter = yt.streams.filter(abr='128kbps',progressive=False, only_audio=True).first()
-        res = '1080p'
-    except:
-        videofilter = yt.streams.filter(res='720p', progressive=False).first()
-        audiofilter = yt.streams.filter(abr='128kbps', progressive=False, only_audio=True).first()
-        res = '720p'
+    for stream in yt.streams:
+        # Puoi filtrare solo i formati video, ignorando gli audio
+        if "video" in stream.mime_type:
+            resolution = stream.resolution if stream.resolution else "Audio-only"
+            print(f"Risoluzione: {resolution}, Formato: {stream.mime_type}")
+        if "audio" in stream.mime_type:
+            audio_format = stream.mime_type.replace("audio/", "")
+            print(f"Formato audio: {audio_format}, Bitrate: {stream.abr} kbps")
 
-    videofile = videofilter.download(filename="video.mp4", pb = pb)
-    audiofile = audiofilter.download(filename="audio.mp4", pb = pb)
+    thumbnail_url =  get_thumbnail_url(link, service)
+    print(thumbnail_url)
+    image_data = get_image_data_from_url(thumbnail_url)
 
-    threading.Thread(target= merge_audio_video(videofile,audiofile, res, link, ti, pb)).start()
+    return image_data
 
-    return
+# Funzione per ottenere l'URL dell'immagine di copertina di un video
+def get_thumbnail_url(video_url, service):
+    video_id = video_url.split("v=")[1]
+    thumbnail_url= ""
+    response = service.videos().list(part='snippet', id=video_id).execute()
+    if 'items' in response and len(response['items']) > 0:
+        thumbnail_url = response['items'][0]['snippet']['thumbnails']['high']['url']
+
+    return thumbnail_url
+
+def get_image_data_from_url(url):
+    response = requests.get(url)
+    image_data = response.content
+
+    return image_data

@@ -14,9 +14,7 @@ class ProgressBar(ProgressLogger):
             length=280
         )
 
-        self.pb.grid(column=0, row=0, columnspan=2, padx=100, pady=20)
-
-
+        self.pb.grid(column=1, row=2)
 
     def callback(self, **kw):
         super(ProgressBar, self).callback(**kw)
