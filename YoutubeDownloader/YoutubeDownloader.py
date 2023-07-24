@@ -2,7 +2,7 @@ import pytube  # to download video from YouTube
 import time  # to measure download time
 from ffmpeg_progress_yield import FfmpegProgress
 import os
-import tkinter as tk
+import customtkinter as tk
 from googleapiclient.discovery import build
 from PIL import Image, ImageTk
 import requests
@@ -73,28 +73,38 @@ def download(pb):
     #
     # return
 
-def show_all_results(link, service):
+def get_all_results(link, service):
     yt = pytube.YouTube(link, use_oauth=True, allow_oauth_cache=True)
-    print('Title:', yt.title)
-    print('Author:', yt.author)
-    print('Published date:', yt.publish_date.strftime("%Y-%m-%d"))
-    print('Number of views:', yt.views)
-    print('Length of video:', yt.length, 'sec')
+    # print('Title:', yt.title)
+    # print('Author:', yt.author)
+    # print('Published date:', yt.publish_date.strftime("%Y-%m-%d"))
+    # print('Number of views:', yt.views)
+    # print('Length of video:', yt.length, 'sec')
+    video_info_list = [yt.title, yt.author, yt.publish_date, yt.views, yt.length]
+
+    info_dict = {"Title": yt.title, "Author":yt.author, "Published date": yt.publish_date, "Number of views": yt.views, "Length of video":yt.length}
+    list_video_resolution = []
+    list_audio_format = []
 
     for stream in yt.streams:
         # Puoi filtrare solo i formati video, ignorando gli audio
         if "video" in stream.mime_type:
             resolution = stream.resolution if stream.resolution else "Audio-only"
-            print(f"Risoluzione: {resolution}, Formato: {stream.mime_type}")
+            list_video_resolution.append((resolution, stream.mime_type))
+            # print(f"Risoluzione: {resolution}, Formato: {stream.mime_type}")
         if "audio" in stream.mime_type:
             audio_format = stream.mime_type.replace("audio/", "")
-            print(f"Formato audio: {audio_format}, Bitrate: {stream.abr} kbps")
+            list_audio_format.append((audio_format, stream.abr))
+            # print(f"Formato audio: {audio_format}, Bitrate: {stream.abr} kbps")
+
+    info_dict["video_res"] = list_video_resolution
+    info_dict["audio_form"] = list_audio_format
 
     thumbnail_url =  get_thumbnail_url(link, service)
-    print(thumbnail_url)
+    # print(thumbnail_url)
     image_data = get_image_data_from_url(thumbnail_url)
 
-    return image_data
+    return image_data, info_dict
 
 # Funzione per ottenere l'URL dell'immagine di copertina di un video
 def get_thumbnail_url(video_url, service):

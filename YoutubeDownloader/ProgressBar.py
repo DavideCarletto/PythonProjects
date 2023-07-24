@@ -1,13 +1,13 @@
 # proglog source code: https://github.com/Edinburgh-Genome-Foundry/Proglog/blob/master/proglog/proglog.py
 from proglog import ProgressLogger
-from tkinter import ttk
+import customtkinter as tk
 
 class ProgressBar(ProgressLogger):
     def __init__(self, root):
         super(ProgressBar, self).__init__(init_state=None)
         self.root = root
 
-        self.pb = ttk.Progressbar(
+        self.pb = tk.CTkProgressBar(
             root,
             orient='horizontal',
             mode='determinate',
