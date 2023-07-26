@@ -196,14 +196,8 @@ def visualize_scroll_result_frame(root, info_dict):
 
     info_frame.grid_columnconfigure(0, weight=1)
 
-    title_lable = tk.CTkLabel(info_frame, text = f"{info_dict['Title']}", fg_color = thumbnail_frame_color, justify = "left", padx = 10, pady = 10, font = ("Roboto", 15) )
+    title_lable = tk.CTkLabel(info_frame, text = f"{info_dict['Title']}, \t{info_dict['Author']}, \t{info_dict['Length of video']} sec", fg_color = thumbnail_frame_color, justify = "left", padx = 10, pady = 10, font = ("Roboto", 15) )
     title_lable.grid(row = 0, column = 0, sticky = "w")
-
-    author_lable = tk.CTkLabel(info_frame, text = f"{info_dict['Author']}", fg_color = thumbnail_frame_color, justify = "left", padx = 10, pady = 2)
-    author_lable.grid(row = 1, column = 0, sticky = "w")
-
-    lenght_lable = tk.CTkLabel(info_frame, text = f"{info_dict['Length of video']}", fg_color = thumbnail_frame_color, justify = "left", padx = 10, pady = 2)
-    lenght_lable.grid(row = 2, column = 0, sticky = "w")
 
     # scroll_result_frame = sf.ScrollableFrame(root, info_dict)
     # scroll_result_frame.configure(fg_color=thumbnail_frame_color)
@@ -306,7 +300,7 @@ def visualize_MainFrame():
     search_button = tk.CTkButton(progressbar_frame, text="Search", command = lambda: get_entry_search(thumbnail_label, thumbnail_frame, frames), fg_color="#749BC2")
     search_button.grid(column=2, row=1)
 
-    # view_result_frame(search_options_frame)
+    view_result_frame(search_options_frame)
     # download_button = tk.CTkButton(progressbar_frame, text="Download", command=lambda: start_download(pb))
     # download_button.grid(column=2, row=1, padx = 10)
 
