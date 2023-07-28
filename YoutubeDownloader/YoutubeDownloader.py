@@ -97,8 +97,8 @@ def get_all_results(link, service):
             list_audio_format.append((audio_format, stream.abr))
             # print(f"Formato audio: {audio_format}, Bitrate: {stream.abr} kbps")
 
-    info_dict["video_res"] = list_video_resolution
-    info_dict["audio_form"] = list_audio_format
+    info_dict["video_res_list"] = list_video_resolution
+    info_dict["audio_res_list"] = list_audio_format
 
     thumbnail_url =  get_thumbnail_url(link, service)
     # print(thumbnail_url)

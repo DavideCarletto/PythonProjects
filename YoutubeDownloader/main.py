@@ -1,11 +1,10 @@
 import threading
 
-import customtkinter
 import pytube.request
 from googleapiclient.discovery import build
 from moviepy.editor import *
-from tkinter import ttk
 
+import MainFrame
 import TabView
 import YoutubeDownloader
 import customtkinter as tk
@@ -15,10 +14,9 @@ from ProgressBar import ProgressBar
 import cv2
 import json
 import pytube.exceptions
-import TabView as tf
 
-customtkinter.set_appearance_mode("light")
-customtkinter.set_default_color_theme("dark-blue")
+tk.set_appearance_mode("dark")
+tk.set_default_color_theme("dark-blue")
 
 API_KEY = os.environ.get("YT-API")
 pytube.request.default_range_size = 1000000
@@ -27,52 +25,7 @@ not_calling = 2
 call_counter = 0
 
 thumbnail_path = "./Images/Thumbnail.png"
-logo_path = "./Images/YtLogo.png"
-
-thumbnail_frame_color = "#E5E8EB"
-inital_text_on_entry = "Inserire URL"
-
-def start_download(pb):
-    threading.Thread(target=lambda: download_video(pb)).start()
-
-def start_search(link ,service, thumbnail_label,root, frames):
-    threading.Thread(target=lambda: search_videos(link, service,thumbnail_label,root, frames)).start()
-
-def start_resize_image_on_resize_event(event, label, img_path):
-    threading.Thread(target = lambda: resize_image_on_resize_event(event, label, img_path)).start()
-
-def show_image_from_path(root, image_path, lable):
-
-    img = Image.open(image_path)
-    img = img.resize((root.winfo_width(), root.winfo_height()), Image.BICUBIC)
-    img = ImageTk.PhotoImage(img)
-
-    root.pack_propagate(False)
-
-    lable.configure(image=img)
-    lable.image = img
-    lable.pack_propagate(False)
-
-    lable.pack()
-
-
-def show_image_from_data(image_data, thumbnail_img, frame):
-    img = Image.open(io.BytesIO(image_data))
-    #TODO: black borders not removed
-    # img = remove_black_borders(thumbnail_path)
-    img.save(thumbnail_path)
-    img = img.resize((frame.winfo_width(), frame.winfo_height()), Image.BICUBIC)
-    img = ImageTk.PhotoImage(img)
-
-
-    frame.pack_propagate(False)
-
-    thumbnail_img.configure(image=img)
-    thumbnail_img.image = img
-    thumbnail_img.pack_propagate(False)
-
-    thumbnail_img.pack()
-
+# logo_path = "./Images/blue-download-icon-3.jpg"
 
 def remove_black_borders(image_path):
     def remove_black_borders(image_path):
@@ -107,23 +60,7 @@ def remove_black_borders(image_path):
 
     return Image.open(image_path)
 
-def resize_image_on_resize_event(event, label, img_path):
-    global call_counter
 
-    if call_counter % not_calling == 0:
-        # Prendo le dimensioni attuali della finestra
-        original_image = Image.open(img_path)
-        frame_width = event.winfo_width()
-        frame_height = event.winfo_height()
-
-        # Ridimensiono l'immagine per adattarla alle dimensioni della finestra
-        resized_image = original_image.resize((frame_width, frame_height), Image.BICUBIC)
-        photo = ImageTk.PhotoImage(resized_image)
-
-        # Aggiorno l'immagine nella label
-        label.config(image=photo)
-        label.image = photo
-    call_counter+=1
 
 def get_pl_ids():
     service = build("youtube", "v3", developerKey=API_KEY)
@@ -165,148 +102,113 @@ def get_pl_ids():
             break
 
 
-def download_video(pb):
-    YoutubeDownloader.download(pb)
-    return
 
-def set_all_frame_color(style, frames):
-    frames[0].configure(relief = "solid", borderwidth = 2)
-    frames[2].configure(relief = "solid", borderwidth = 2)
-    for frame in frames:
-        frame.configure(style = style)
+def start_resize_image_on_resize_event(event, label, img_path, resize_factor = 1):
+    threading.Thread(target=lambda: resize_image_on_resize_event(event, label, img_path, resize_factor)).start()
 
+def resize_image_on_resize_event(event, label, img_path, resize_factor):
+    global call_counter
+    if call_counter % not_calling == 0:
+        # Prendo le dimensioni attuali della finestra
+        original_image = Image.open(img_path)
+        frame_width = event.winfo_width()
+        frame_height = event.winfo_height()
 
-def search_videos(link, service, thumbnail_label, root, frames):
+        # Ridimensiono l'immagine per adattarla alle dimensioni della finestra
+        resized_image = original_image.resize((int(frame_width/resize_factor), int(frame_height/resize_factor)), Image.BICUBIC)
+        photo = ImageTk.PhotoImage(resized_image)
+
+        # Aggiorno l'immagine nella label
+        label.configure(image=photo)
+        label.image = photo
+    call_counter += 1
+
+def start_search(link, service, thumbnail_label, root, frames, main_frame):
+    threading.Thread(target=lambda: search_videos(link, service, thumbnail_label, root, frames, main_frame)).start()
+
+def search_videos(link, service, thumbnail_label, root, frames, main_frame):
+    print("Inizio ricerca")
     try:
         image_data, info_dict = YoutubeDownloader.get_all_results(link, service)
-        style = "search_result_frame.TFrame"
-        set_all_frame_color(style, frames)
         show_image_from_data(image_data, thumbnail_label, root)
-        visualize_scroll_result_frame(frames[2], info_dict)
+        main_frame.visualize_scroll_result_frame(frames[2], info_dict)
+        set_all_frame_color("#343638", frames)
     except pytube.exceptions.RegexMatchError:
         print("Errore, video non trovato")
 
-def visualize_scroll_result_frame(root, info_dict):
-    info_frame = ttk.Frame(root, style = "search_result_frame.TFrame")
-    info_frame.grid(row = 0, column = 0, sticky = "wsen", padx = 0, pady = 0)
+def set_all_frame_color(color, frames):
+    frames[0].configure(border_width=1, border_color="white")
+    frames[2].configure(border_width=1, border_color="white")
+    for frame in frames:
+        frame.configure(fg_color=color)
 
-    info_frame.grid_rowconfigure(0, weight=1)
-    info_frame.grid_rowconfigure(1, weight=1)
-    info_frame.grid_rowconfigure(2, weight=1)
+def show_image_from_data(image_data, thumbnail_img, frame):
+    img = Image.open(io.BytesIO(image_data))
+    # TODO: black borders not removed
+    # img = remove_black_borders(thumbnail_path)
+    img.save(thumbnail_path)
+    img = img.resize((frame.winfo_width(), frame.winfo_height()), Image.BICUBIC)
+    img = ImageTk.PhotoImage(img)
 
-    info_frame.grid_columnconfigure(0, weight=1)
+    frame.pack_propagate(False)
 
-    title_lable = tk.CTkLabel(info_frame, text = f"{info_dict['Title']}, \t{info_dict['Author']}, \t{info_dict['Length of video']} sec", fg_color = thumbnail_frame_color, justify = "left", padx = 10, pady = 10, font = ("Roboto", 15) )
-    title_lable.grid(row = 0, column = 0, sticky = "w")
+    thumbnail_img.configure(image=img)
+    thumbnail_img.image = img
+    thumbnail_img.pack_propagate(False)
 
-    # scroll_result_frame = sf.ScrollableFrame(root, info_dict)
-    # scroll_result_frame.configure(fg_color=thumbnail_frame_color)
-    # scroll_result_frame.grid(row=1, column=0, sticky="wsen", padx = 0, pady = 0)
+    thumbnail_img.pack()
 
-    view_result_frame(root)
+def show_image_from_path(root, image_path, lable):
 
-def view_result_frame (root):
+    img = Image.open(image_path)
+    img = img.resize((root.winfo_width(), root.winfo_height()), Image.BICUBIC)
+    img = ImageTk.PhotoImage(img)
 
-    result_frame = tf.TabView(root)
-    result_frame.configure(fg_color=thumbnail_frame_color)
-    result_frame.grid(row = 1, column = 0, sticky = "wsen", padx = 10)
+    root.pack_propagate(False)
+
+    lable.configure(image=img)
+    lable.image = img
+    lable.pack_propagate(False)
+
+    lable.pack()
+
+def start_download(pb):
+    threading.Thread(target=lambda: download_video(pb)).start()
 
 
+def download_video( pb):
+    YoutubeDownloader.download(pb)
+    return
 
 def visualize_MainFrame():
     service = build("youtube", "v3", developerKey=API_KEY)
 
-    # def on_entry_click(event):
-    #     print(entry.get())
-    #     if entry.get() == inital_text_on_entry:
-    #         print("Ciao")
-    #         entry.configure(textcolor='black', placeholder_text_color = "URL:")  # Imposta il colore del testo a nero quando inizia l'inserimento
-    #
-    # def on_focusout(event):
-    #     if entry.get() == inital_text_on_entry:
-    #         entry.configure(textcolor='black', placeholder_text_color = "URL:")  # Imposta il colore del testo a grigio quando il campo di testo perde il focus
-
     def get_entry_search(thumbnail_label, root, frames):
-        link =  entry.get()
+        link = main_frame.entry.get()
         link = "https://www.youtube.com/watch?v=HrRt3KX3MFQ"
-        start_search(link, service,thumbnail_label,root, frames)
+        start_search(link, service, thumbnail_label, root, frames, main_frame)
 
     root = tk.CTk()
     root.title("YoutubeDownloader")
     root.geometry("960x540+250+100")
 
-    s = ttk.Style()
-    s.configure("thumbnail_frame.TFrame", background = "black")
-    s.configure("search_result_frame.TFrame", background = thumbnail_frame_color)
+    root.grid_propagate(False)
+    root.grid_columnconfigure(0, weight =1)
+    root.grid_rowconfigure(0, weight =1)
 
-    root.grid_rowconfigure(0, weight = 1)
-    root.grid_rowconfigure(1, weight = 2)
-    root.grid_rowconfigure(2, weight = 3)
+    main_frame = MainFrame.MainFrame(master=root)
+    main_frame.grid(row = 0, column = 0, sticky = "nsew")
 
-    root.grid_columnconfigure(0, weight = 2)
-    root.grid_columnconfigure(1, weight = 3)
-    root.grid_columnconfigure(3, weight = 2)
+    show_image_from_path(main_frame.logo_frame, MainFrame.logo_path, main_frame.logo_lable)
 
-    logo_frame = ttk.Frame(root)#,style = "search_result_frame.TFrame")
-    logo_frame.grid(column = 1, row = 0, sticky = "wesn", pady = 20)
+    main_frame.thumbnail_label.bind("<Configure>", lambda event=main_frame.thumbnail_frame,thumbnail_label=main_frame.thumbnail_label: start_resize_image_on_resize_event(main_frame.thumbnail_frame, thumbnail_label, thumbnail_path))
+    main_frame.logo_lable.bind("<Configure>", lambda event=main_frame.title_frame, logo_lable=main_frame.logo_lable: start_resize_image_on_resize_event(main_frame.logo_frame, logo_lable, MainFrame.logo_path))
+    main_frame.title_lable.bind("<Configure>", lambda event=main_frame.title_frame, title_lable=main_frame.title_lable: start_resize_image_on_resize_event(main_frame.logo_frame, title_lable, MainFrame.yt_logo_path))
 
-    logo_lable = ttk.Label(logo_frame)
-    show_image_from_path(logo_frame, logo_path, logo_lable)
-
-    progressbar_frame = ttk.Frame(root)
-    progressbar_frame.grid(column=1, row=1, sticky = "we")
-    progressbar_frame.grid_columnconfigure(0, weight = 1)
-    progressbar_frame.grid_columnconfigure(1, weight = 5)
-    progressbar_frame.grid_columnconfigure(2, weight = 1)
-
-    # pb = ProgressBar(progressbar_frame)
-
-    # entry_var = tk.StringVar()
-    # entry_var.set("URL: https://www.youtube.com/watch?v=mcdkexoJeDQ")
-
-    # Creazione della text box
-    entry = tk.CTkEntry(progressbar_frame, placeholder_text=inital_text_on_entry, text_color="gray")
-    # entry.bind('<FocusIn>', on_entry_click)  # Associare l'evento di click per rimuovere il testo predefinito
-    # entry.bind('<FocusOut>', on_focusout)  # Associare l'evento di perdita del focus per ripristinare il testo predefinito
-    entry.grid(row = 1, column = 1,sticky = "we")
-
-    search_result_frame = ttk.Frame(root)#, style="search_result_frame.TFrame")
-    search_result_frame.grid_propagate(False)
-    search_result_frame.grid(column=0, row=2, columnspan = 4, sticky = "nswe")
-
-    search_result_frame.rowconfigure(0, weight = 1)
-
-    search_result_frame.columnconfigure(0, weight=2)
-    search_result_frame.columnconfigure(1, weight=3)
-
-    thumbnail_frame = ttk.Frame(search_result_frame)#, style = "search_result_frame.TFrame")
-    thumbnail_frame.grid(row = 0, column = 0, sticky = "nsew", padx = 50, pady = 40)
-
-    thumbnail_label = ttk.Label(thumbnail_frame)
-
-
-    thumbnail_label.bind("<Configure>", lambda event = thumbnail_frame, thumbnail_label = thumbnail_label: start_resize_image_on_resize_event(thumbnail_frame,thumbnail_label, thumbnail_path))
-    logo_lable.bind("<Configure>", lambda event = logo_frame, logo_lable = logo_lable: start_resize_image_on_resize_event(logo_frame,logo_lable, logo_path))
-
-    search_options_frame = ttk.Frame(search_result_frame)#,style="search_result_frame.TFrame")
-
-    search_options_frame.columnconfigure(0, weight = 1)
-    search_options_frame.rowconfigure(0,weight = 1)
-    search_options_frame.rowconfigure(1, weight = 2)
-
-    search_options_frame.grid(column = 1, row = 0, sticky = "nsew")
-
-    frames = [search_result_frame, thumbnail_frame, search_options_frame]
-    search_button = tk.CTkButton(progressbar_frame, text="Search", command = lambda: get_entry_search(thumbnail_label, thumbnail_frame, frames), fg_color="#749BC2")
-    search_button.grid(column=2, row=1)
-
-    view_result_frame(search_options_frame)
-    # download_button = tk.CTkButton(progressbar_frame, text="Download", command=lambda: start_download(pb))
-    # download_button.grid(column=2, row=1, padx = 10)
+    frames = [main_frame.search_result_frame, main_frame.thumbnail_frame, main_frame.search_options_frame]
+    main_frame.search_button.configure(command=lambda: get_entry_search(main_frame.thumbnail_label, main_frame.thumbnail_frame, frames))
 
     root.mainloop()
-
-
 def main():
     # get_pl_ids()
     visualize_MainFrame()
