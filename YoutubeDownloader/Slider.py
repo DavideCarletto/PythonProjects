@@ -9,13 +9,15 @@ class Slider(tk.CTkSlider):
 
         if self.value_list is not None:
             self.configure(command=self.set_value)
-            self.set(max(self.value_list))
+            self.set_value(max(self.value_list))
+
+        self.value = (max(self.value_list))
 
     def set_value(self, curval):
         curval = get_closest_num(curval, self.value_list)
         if curval in self.value_list:
             self.set(curval)
-            print(curval)
+            self.value = curval
 
     def set_value_list(self, value_list):
         self.value_list = value_list

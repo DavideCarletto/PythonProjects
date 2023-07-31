@@ -1,7 +1,6 @@
-# proglog source code: https://github.com/Edinburgh-Genome-Foundry/Proglog/blob/master/proglog/proglog.py
 from proglog import ProgressLogger
 import customtkinter as tk
-
+from tkinter import ttk
 class ProgressBar(ProgressLogger):
     def __init__(self, root):
         super(ProgressBar, self).__init__(init_state=None)
@@ -9,12 +8,13 @@ class ProgressBar(ProgressLogger):
 
         self.pb = tk.CTkProgressBar(
             root,
-            orient='horizontal',
+            orientation='horizontal',
             mode='determinate',
-            length=280
+            progress_color="green"
         )
 
-        self.pb.grid(column=1, row=2)
+        self.pb.set(0)
+
 
     def callback(self, **kw):
         super(ProgressBar, self).callback(**kw)
@@ -29,10 +29,13 @@ class ProgressBar(ProgressLogger):
 
     def update_progress(self, value):
 
-        while(self.pb["value"]< value):
-            self.pb["value"] += 0.5
+        while(self.pb.get()*100< value):
+            self.pb.set(self.pb.get()+0.005)
+            # print(self.pb.get())
             self.pb.update()
-            self.pb.after(10)
 
-            value_label = ttk.Label(self.root, text = f"Current Progress: {self.pb['value']}%")
-            value_label.grid(column=0, row=2, columnspan=2)
+            # value_label = ttk.Label(self.root, text = f"Current Progress: {self.pb['value']}%")
+            # value_label.grid(column=0, row=2, columnspan=2)
+
+    def show(self, row, column):
+        self.pb.grid(column=column, row=row)
