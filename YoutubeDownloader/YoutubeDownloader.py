@@ -10,19 +10,21 @@ import subprocess
 yt_video_pattern = r"^https://www\.youtube\.com/shorts/([a-zA-Z0-9_-]+)$"
 output_folder = "./media_downloads"
 kw = {
-    "total":0,
-    "merge":True,
-    "elapsed-time":0,
-    "time-remaning":0
+    "total": 0,
+    "merge": True,
+    "elapsed-time": 0,
+    "time-remaning": 0
 }
 
-def merge_audio_video(audio_file, video_file, output, res, link,ti, pb):
 
+def merge_audio_video(audio_file, video_file, output, progress_bar):
     ffmpeg_command = f'ffmpeg -i "{video_file}" -i "{audio_file}" -c:v copy -c:a aac -strict experimental -progress pipe:1 "{output}"'
+    progress_bar.progress_label.set_text(text="Merging audio and video file...")
 
     try:
         # Esegui il comando FFmpeg utilizzando subprocess e cattura l'output
-        process = subprocess.Popen(ffmpeg_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,text=True)
+        process = subprocess.Popen(ffmpeg_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                   text=True)
 
         total_duration = 0
         current_duration = 0
@@ -40,56 +42,100 @@ def merge_audio_video(audio_file, video_file, output, res, link,ti, pb):
                     float(x) * 60 ** i for i, x in enumerate(reversed(time_match.group(1).split(":"))))
 
             if total_duration > 0:
-                progress_percentage = (current_duration / total_duration) * 100
+                progress_percentage = progress_bar.pb.get()*100 + ((current_duration / total_duration) * 100)
                 print(f"Progresso: {progress_percentage:.2f}%")
+                # progress_bar.update_progress(progress_percentage, progress_bar.pb.get()*100, factor=3)
 
         # Aspetta che il processo si completi
         process.wait()
 
-        print("Unione completata con successo!")
-    except subprocess.CalledProcessError as e:
-        print("Errore durante l'unione:", e)
+        progress_bar.pb.stop()
+        progress_bar.audio_converting_lable.grid_forget()
+        progress_bar.show_text(progress_bar.download_status_lable)
 
-    print(res, 'video successfully downloaded from', link)
-    print('Time taken: {:.0f} sec'.format(time.time() - ti))
+    except subprocess.CalledProcessError as e:
+        progress_bar.download_status_lable.configure(text ="Error while merging!")
+
     return
 
-def download(pb, link, res, abr, only_audio, only_video):
 
+def download(main_frame,progress_bar, link, res, abr, only_audio, only_video, file_name):
     ti = time.time()
     yt = pytube.YouTube(link, use_oauth=True, allow_oauth_cache=True)
 
-    print(pb, link, res, abr, only_audio, only_video)
-    # try:
-    if only_audio is False:
-        videofile = get_video_filter(yt, res, only_video)
-        videofile.download(filename="video.mp4", pb = pb, output_path= output_folder)
-    if only_video is False:
-        output_file = os.path.join(output_folder, "audio.mp3")
-        audiofile = get_audio_filter(yt, abr, only_audio)
-        audiofile.download(filename="audio_temp.mp4", pb = pb, output_path=output_folder)
-        input_file = os.path.join(output_folder, "audio_temp.mp4")
-        convert_to_mp3(input_file, output_file)
-    # except Exception:
+    print(progress_bar, link, res, abr, only_audio, only_video)
+    both = False
+    factor = 1
+    offset = 0
 
-    if only_video is False and only_audio is False:
-        video_file = os.path.join(output_folder, "video.mp4")
-        audio_file = os.path.join(output_folder, "audio.mp3")
-        output_file = os.path.join(output_folder, "output.mp4")
-        threading.Thread(target= merge_audio_video(audio_file, video_file, output_file, res, link, ti, pb)).start()
+    try:
+
+        if only_audio is False and only_video is False:
+            both = True
+            factor = 3
+            offset = 23
+
+        if only_audio is False:
+            videofile = get_video_filter(yt, res)
+            videofile.download(main_frame = main_frame, filename=f"{file_name}.mp4", progress_bar=progress_bar, type="video", factor = factor, offset = 0, output_path=output_folder)
+
+            if only_video:
+                progress_bar.percentage_label.grid_forget()
+                progress_bar.show_text(progress_bar.download_status_lable)
+
+        if only_video is False:
+            output_file = os.path.join(output_folder, f"{file_name}.mp3")
+            audiofile = get_audio_filter(yt, abr)
+            audiofile.download(main_frame=main_frame, filename="audio_temp.mp4", progress_bar=progress_bar, type ="audio", offset = offset, factor= factor, output_path=output_folder)
+            input_file = os.path.join(output_folder, "audio_temp.mp4")
+
+            progress_bar.show_text(progress_bar.audio_converting_lable)
+
+            if only_audio:
+                progress_bar.percentage_label.grid_forget()
+                progress_bar.pb.start()
+                convert_to_mp3(input_file, output_file, progress_bar)
+                progress_bar.pb.stop()
+                progress_bar.audio_converting_lable.grid_forget()
+
+    except Exception:
+        progress_bar.download_status_lable.configure(text="Download Failed!", text_color="#ff0000")
+
+        if both:
+            progress_bar.percentage_label.grid_forget()
+            progress_bar.pb.start()
+            video_file = os.path.join(output_folder, f"{file_name}.mp4")
+            audio_file = os.path.join(output_folder, f"{file_name}.mp3")
+            output_file = os.path.join(output_folder, "output_temp.mp4")
+            threading.Thread(target=merge_audio_video(audio_file, video_file, output_file, progress_bar)).start()
+
+            delete_file(f"./media_downloads/{file_name}.mp3")
+            delete_file(f"./media_downloads/{file_name}.mp4")
+
+            try:
+                os.rename("./media_downloads/output_temp.mp4", f"./media_downloads/{file_name}.mp4")
+                print(f"File rinominato da output_temp.mp4 a {file_name}")
+            except OSError as e:
+                print(f"Errore durante la rinomina: {e}")
+
+        main_frame.show_search_frame()
+        progress_bar.download_status_lable.configure(text =progress_bar.download_status_lable.cget("text") + "\n" + "Time taken: {:.0f} sec".format(time.time() - ti))
 
     return
 
-def get_video_filter(yt, res, only_video):
-    return yt.streams.filter(res = f"{res}p", progressive=False, only_video= only_video).first()
+def get_video_filter(yt, res):
+    return yt.streams.filter(res=f"{res}p", progressive=True, only_video=False).first()
 
-def get_audio_filter(yt, abr, only_audio):
-    return yt.streams.filter(abr = f"{abr}kbps", progressive=False, only_audio = only_audio).first()
+
+def get_audio_filter(yt, abr):
+    return yt.streams.filter(abr=f"{abr}kbps", progressive=True, only_audio=False).first()
+
 
 def get_all_results(link, service):
     yt = pytube.YouTube(link, use_oauth=True, allow_oauth_cache=True)
 
-    info_dict = {"Title": yt.title, "Author":yt.author, "Published date": yt.publish_date, "Number of views": yt.views, "Length of video":yt.length}
+    info_dict = {"Title": yt.title, "Author": yt.author, "Published date": yt.publish_date, "Number of views": yt.views,
+                 "Length of video": yt.length}
     list_video_resolution = []
     list_audio_format = []
 
@@ -107,13 +153,13 @@ def get_all_results(link, service):
     info_dict["video_res_list"] = list_video_resolution
     info_dict["audio_res_list"] = list_audio_format
 
-    thumbnail_url =  get_thumbnail_url(link, service)
+    thumbnail_url = get_thumbnail_url(link, service)
     image_data = get_image_data_from_url(thumbnail_url)
 
     return image_data, info_dict
 
-def get_thumbnail_url(video_url, service):
 
+def get_thumbnail_url(video_url, service):
     video_id = None
 
     if "shorts" in video_url:
@@ -123,12 +169,13 @@ def get_thumbnail_url(video_url, service):
     else:
         video_id = video_url.split("v=")[1]
 
-    thumbnail_url= ""
+    thumbnail_url = ""
     response = service.videos().list(part='snippet', id=video_id).execute()
     if 'items' in response and len(response['items']) > 0:
         thumbnail_url = response['items'][0]['snippet']['thumbnails']['high']['url']
 
     return thumbnail_url
+
 
 def get_image_data_from_url(url):
     response = requests.get(url)
@@ -136,9 +183,20 @@ def get_image_data_from_url(url):
 
     return image_data
 
-def convert_to_mp3(input_file, output_file):
+
+def convert_to_mp3(input_file, output_file, progress_bar):
     audio_clip = AudioFileClip(input_file)
     audio_clip.write_audiofile(output_file)
 
     audio_clip.close()
     os.remove(input_file)
+    progress_bar.show_text(progress_bar.download_status_lable)
+
+def delete_file(file_path):
+
+    try:
+        if os.path.isfile(file_path):
+            os.remove(file_path)
+            print(f"File removed: {file_path}")
+    except OSError as e:
+        print(f"Error while deleting file '{file_path}': {e}")

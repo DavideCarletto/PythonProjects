@@ -1,8 +1,9 @@
 import customtkinter as tk
 
+
 class Slider(tk.CTkSlider):
     def __init__(self, master, **kwargs):
-        self.value_list = kwargs.pop("value_list") # .pop cause not-standard values (any other value) are now allowed
+        self.value_list = kwargs.pop("value_list")  # .pop cause not-standard values (any other value) are now allowed
 
         super().__init__(master, **kwargs)
         self.value_list = self.value_list
@@ -21,6 +22,7 @@ class Slider(tk.CTkSlider):
 
     def set_value_list(self, value_list):
         self.value_list = value_list
+
 
 def get_closest_num(num, value_list):
     closest_num = None

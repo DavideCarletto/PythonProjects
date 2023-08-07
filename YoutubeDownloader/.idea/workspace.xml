@@ -47,10 +47,13 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Images" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Davide\PythonProjects\YoutubeDownloader\Images" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Davide\PythonProjects\YoutubeDownloader\Images" />
       <recent name="C:\Users\Davide\PythonProjects\YoutubeDownloader" />
@@ -122,6 +125,14 @@
       <workItem from="1690555809171" duration="686000" />
       <workItem from="1690793109424" duration="12646000" />
       <workItem from="1690834109196" duration="11864000" />
+      <workItem from="1690882687418" duration="20455000" />
+      <workItem from="1690968494034" duration="1692000" />
+      <workItem from="1690970223032" duration="15519000" />
+      <workItem from="1691054379250" duration="8960000" />
+      <workItem from="1691139487288" duration="3689000" />
+      <workItem from="1691151712156" duration="5757000" />
+      <workItem from="1691226416607" duration="3374000" />
+      <workItem from="1691419520182" duration="8073000" />
     </task>
     <servers />
   </component>
@@ -130,6 +141,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/YoutubeDownloader$Unnamed.coverage" NAME="YoutubeDownloader Coverage Results" MODIFIED="1680373571036" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.." />
-    <SUITE FILE_PATH="coverage/YoutubeDownloader$YoutubeDownloader.coverage" NAME="YoutubeDownloader Coverage Results" MODIFIED="1690845411702" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/YoutubeDownloader$YoutubeDownloader.coverage" NAME="YoutubeDownloader Coverage Results" MODIFIED="1691427358423" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
