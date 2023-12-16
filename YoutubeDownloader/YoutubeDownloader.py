@@ -1,5 +1,5 @@
 import re
-import pytube  # to download video from YouTube
+import pytube
 import time  # to measure download time
 from moviepy.editor import *
 import os
@@ -58,7 +58,7 @@ def merge_audio_video(audio_file, video_file, output, progress_bar):
 
     return
 
-
+#TODO: rimodificare il file streams.py della libreria pytube in modo da visualizzare progress bar mannaggia la madonna
 def download(main_frame,progress_bar, link, res, abr, only_audio, only_video, file_name):
     ti = time.time()
     yt = pytube.YouTube(link, use_oauth=True, allow_oauth_cache=True)
@@ -78,28 +78,31 @@ def download(main_frame,progress_bar, link, res, abr, only_audio, only_video, fi
         if only_audio is False:
             videofile = get_video_filter(yt, res)
             videofile.download(main_frame = main_frame, filename=f"{file_name}.mp4", progress_bar=progress_bar, type="video", factor = factor, offset = 0, output_path=output_folder)
-
+            print(videofile)
             if only_video:
                 progress_bar.percentage_label.grid_forget()
                 progress_bar.show_text(progress_bar.download_status_lable)
 
         if only_video is False:
             output_file = os.path.join(output_folder, f"{file_name}.mp3")
+            print(yt, abr)
             audiofile = get_audio_filter(yt, abr)
+            print(type(audiofile))
             audiofile.download(main_frame=main_frame, filename="audio_temp.mp4", progress_bar=progress_bar, type ="audio", offset = offset, factor= factor, output_path=output_folder)
             input_file = os.path.join(output_folder, "audio_temp.mp4")
 
             progress_bar.show_text(progress_bar.audio_converting_lable)
 
-            if only_audio:
+            if only_audio is True:
                 progress_bar.percentage_label.grid_forget()
                 progress_bar.pb.start()
                 convert_to_mp3(input_file, output_file, progress_bar)
                 progress_bar.pb.stop()
                 progress_bar.audio_converting_lable.grid_forget()
 
-    except Exception:
+    except Exception as e:
         progress_bar.download_status_lable.configure(text="Download Failed!", text_color="#ff0000")
+        print(e)
 
         if both:
             progress_bar.percentage_label.grid_forget()
@@ -120,7 +123,6 @@ def download(main_frame,progress_bar, link, res, abr, only_audio, only_video, fi
 
         main_frame.show_search_frame()
         progress_bar.download_status_lable.configure(text =progress_bar.download_status_lable.cget("text") + "\n" + "Time taken: {:.0f} sec".format(time.time() - ti))
-
     return
 
 def get_video_filter(yt, res):
@@ -128,7 +130,10 @@ def get_video_filter(yt, res):
 
 
 def get_audio_filter(yt, abr):
-    return yt.streams.filter(abr=f"{abr}kbps", progressive=True, only_audio=False).first()
+    #TODO: capire perchè non va abr e prendere l'audio migliore
+    # return yt.streams.filter(abr=f"{abr}kbps", progressive=True, only_audio=False).first()
+    print(yt.streams.filter(progressive=True, only_audio=False))
+    return yt.streams.filter(progressive=True, only_audio=False).last()
 
 
 def get_all_results(link, service):

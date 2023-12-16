@@ -1,5 +1,5 @@
 import threading
-import pytube.request
+import pytube
 from googleapiclient.discovery import build
 from moviepy.editor import *
 import MainFrame
@@ -9,7 +9,6 @@ from PIL import Image, ImageTk
 import io
 import numpy as np
 import json
-import pytube.exceptions
 import cv2
 
 tk.set_appearance_mode("dark")
