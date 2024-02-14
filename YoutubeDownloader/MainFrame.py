@@ -168,6 +168,7 @@ class MainFrame(tk.CTkFrame):
 
     def show_loading_download_lable(self):
         self.clear_frame(self.result_frame.tab(self.result_frame.get()))
+        self.searching_lable.grid_forget()
         self.loading_lable = tk.CTkLabel(self.result_frame.tab(self.result_frame.get()))
         self.download_loading_label = tk.CTkLabel(self.result_frame.tab(self.result_frame.get()), text="")
         self.download_loading_label.grid(column = 0, row = 1, columnspan = 3, sticky = "we")

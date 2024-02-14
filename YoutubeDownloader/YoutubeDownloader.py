@@ -172,7 +172,7 @@ def get_thumbnail_url(video_url, service):
         if match:
             video_id = match.group(1)
     else:
-        video_id = video_url.split("v=")[1]
+        video_id = (video_url.split("v=")[1]).split("&")[0]
 
     thumbnail_url = ""
     response = service.videos().list(part='snippet', id=video_id).execute()

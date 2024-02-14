@@ -37,7 +37,7 @@ class ProgressBar(ProgressLogger):
             self.pb.set(self.pb.get()+(0.005/factor))
             self.pb.update()
             self.percentage_label.configure(text=f"{int(self.pb.get()*100)}%")
-            print(percentage/factor+offset)
+            # print(percentage/factor+offset)
 
         if self.pb.get()*100 >= 100:
             self.progress_label.after(1000, self.progress_label.stop_scrolling())
@@ -51,7 +51,7 @@ class ProgressBar(ProgressLogger):
         self.progress_label.grid_configure(sticky="s")
         self.progress_label.grid_propagate(False)
         self.progress_label.set_text("")
-        self.percentage_label.grid(row=0, column=2, sticky="w", padx=10)
+        self.percentage_label.grid(row=1, column=2, sticky="w", padx=10)
         self.pb.grid(column=column, row=row, sticky = "we")
 
 

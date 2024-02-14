@@ -39,6 +39,10 @@ class Stream:
         """
         # A dictionary shared between all instances of :class:`Stream <Stream>`
         # (Borg pattern).
+        self.offset = None
+        self.factor = None
+        self.progress_bar = None
+        self.main_frame = None
         self._monostate = monostate
 
         self.url = stream["url"]  # signed download url
@@ -301,6 +305,12 @@ class Stream:
         :rtype: str
 
         """
+
+        self.main_frame = main_frame
+        self.progress_bar = progress_bar
+        self.type = type
+        self.factor = factor
+        self.offset = offset
         file_path = self.get_file_path(
             filename=filename,
             output_path=output_path,
@@ -317,6 +327,10 @@ class Stream:
 
         with open(file_path, "wb") as fh:
             try:
+                self.progress_bar.show(1,1)
+                self.main_frame.loading_lable.grid_forget()
+                self.main_frame.download_loading_label.grid_forget()
+
                 for chunk in request.stream(
                     self.url,
                     timeout=timeout,
@@ -401,6 +415,10 @@ class Stream:
         """
         file_handler.write(chunk)
         logger.debug("download remaining: %s", bytes_remaining)
+        percentage = int(100-(bytes_remaining/self.filesize*100))
+        # print(f"download: {percentage}%")
+        self.progress_bar.update_progress(percentage, 0)
+
         if self._monostate.on_progress:
             self._monostate.on_progress(self, chunk, bytes_remaining)
 
@@ -415,6 +433,11 @@ class Stream:
 
         """
         logger.debug("download finished")
+        self.progress_bar.audio_converting_lable.grid_forget()
+        self.progress_bar.merging_video_audio_lable.grid_forget()
+        self.progress_bar.percentage_label.grid_forget()
+        self.main_frame.result_frame.show_tab_elements()
+        self.progress_bar.progress_label.grid_forget()
         on_complete = self._monostate.on_complete
         if on_complete:
             logger.debug("calling on_complete callback %s", on_complete)
